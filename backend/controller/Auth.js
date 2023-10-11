@@ -1,5 +1,5 @@
 const SignUp = require("../model/Signup");
-
+const bcrypt = require("bcrypt");
 exports.SignUp = async (req,res,next) => {
     console.log(req.body);
     const email = req.body.email;
@@ -26,19 +26,26 @@ exports.SignUp = async (req,res,next) => {
     next();
 }
 
-exports.Login = async (req,res,next) => {
-    const check = await SignUp.findAll();
+exports.Login = async (req,res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    if(!email || !password){
+        console.log("enter All the data");
+        return;
+    };
+    const check = await SignUp.findOne({where:{email:email}});
+    console.log("done");
     if(check === null){
-        res.json("Enter vaild email");
+        console.log("Enter vaild email");
     }
 
-    res.status(200).json(
-        {
-            success:true,
-            data:check,
-            message:"Logged IN Successfully"
+    if(check){
+        if(check.password === password){
+            res.status(200).json(check);
+            return;
         }
-    )
-    next();
-
+    }
+    res.status(404).json({message:"unable to login",data:check})
+    
 };
