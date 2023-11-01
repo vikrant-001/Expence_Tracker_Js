@@ -16,6 +16,10 @@ app.use(ExpenceRoutes);
 
 const User = require("./model/Signup");
 const Expences = require("./model/Expences");
+const Order = require("./model/Payment");
+
+User.hasMany(Order)
+Order.belongsTo(User);
 
 User.hasMany(Expences,{
     foreignKey:"userID",

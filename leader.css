@@ -1,0 +1,27 @@
+.cnt{
+    height: 100vh;
+    width: 75%;
+    margin: 0 auto;
+    background-color: rgb(182, 182, 235);
+
+}
+
+.h11{
+    text-align: center;
+    font-size: 2rem;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.test{
+    display: flex;
+    gap:1rem;
+    align-items: center;
+    justify-content: center;
+    font-size: larger;
+}
+
+.test p {
+    margin: 0.5rem;
+    color: black;
+    font-weight: 600;
+}
