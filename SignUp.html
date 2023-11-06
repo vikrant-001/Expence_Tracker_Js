@@ -7,21 +7,22 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <form class="lgnform" onsubmit="userLogin(event)">
+    <form class="lgnform" onsubmit="addingUser(event)">
         <div>
             <label>Name</label>
+            <input type="text" name="name" >
+            <label>Email</label>
             <input type="email" name="email">
             <label>Password</label>
             <input type="password" name="password">
         </div>
 
         <div>
-            <a href="SignUp.html">SignUp</a>
-            <button class="btn" type="submit">Log IN</button>
-            <a href="./ResetPass/reset.html">Forgot Pass</a>
+            <a href="login.html">Login to Existing</a>
+            <button class="btn" type="submit">Sign up</button>
         </div>
     </form>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script> 
-    <script src="login.js"></script>
+    <script src="SignUp.js" ></script>
 </body>
 </html>

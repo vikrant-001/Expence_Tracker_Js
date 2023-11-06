@@ -1,5 +1,5 @@
 const Expence = require("../model/Expences");
-
+const sequelize = require('../Db/Database');
 exports.addExpence = async(req,res,next) => {
     const expence = req.body.expence;
     const description = req.body.description;
@@ -12,14 +12,17 @@ exports.addExpence = async(req,res,next) => {
         });
     }
 
+    const t = await sequelize.transaction();
     try{
+
         const response = await Expence.create({
             expence:expence,
             description:description,
             price:price,
             userID:userID,
-        });
+        },{transaction:t});
 
+        await t.commit();
         res.status(200).json({
             success:true,
             data:response,
@@ -28,6 +31,7 @@ exports.addExpence = async(req,res,next) => {
     }
 
     catch(err){
+        await t.rollback();
         console.log(err);
         res.status(404).json({
             success:false,

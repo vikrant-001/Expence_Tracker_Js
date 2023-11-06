@@ -1,9 +1,10 @@
 const Razorpay = require("razorpay");
 const Orders = require('../model/Payment');
 const User = require('../model/Signup');
+require('dotenv').config();
 const instance = new Razorpay({
-    key_id:'rzp_test_gOex1E2WIDOLRm',
-    key_secret:'hyeQBpAKpaewuYT9xi3414GV'
+    key_id:process.env.KEY_ID,
+    key_secret:process.env.KEY_SECRET
 });
 
 const option = {

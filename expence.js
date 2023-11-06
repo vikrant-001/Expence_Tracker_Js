@@ -1,14 +1,74 @@
 const lgout = document.querySelector('.lg');
 lgout.addEventListener('click' ,(e) => {
     localStorage.removeItem('res');
+    localStorage.removeItem('pri')
     window.location.href = "login.html"
 });
 
+const preim = document.querySelector("#Premi");
+const leader = document.querySelector('#leader');
 const userID = localStorage.getItem('res');
+const pri = localStorage.getItem('pri');
+
+
 if(userID === undefined || userID === null){
     window.location.href = "login.html"
 };
-console.log(userID);
+
+function check(){
+    console.log("hello jii")
+    if(pri != null){
+        preim.innerText = '';
+        leader.innerText = 'LeaderBoad';
+    }
+}
+
+check();
+
+console.log(userID,pri);
+
+//  payment integration codee ---------------------------------->
+let order_id = ''
+let key = ''
+const paymentId = async () => {
+    const response = await axios.get(`http://localhost:4000/orderId/${userID}`);
+    console.log('RES ',response);
+    order_id = response.data.id;
+}  
+console.log(order_id)
+
+
+let options = {
+    'key': 'rzp_test_gOex1E2WIDOLRm', // Enter the Key ID generated from the Dashboard// Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    'order_id': order_id,
+    'handler' : async function (response) {
+        await axios.put('http://localhost:4000/updateTransation',{
+            order_id : order_id,
+            paymentId:response.razorpay_payment_id,
+            userID:userID,
+            status:"Sucessful",
+        });
+        localStorage.setItem('pri',true);
+        alert("you are now premium user");
+    }
+        
+    };
+
+
+leader.addEventListener('click',(e) => {
+    window.location.href = 'leader.html';
+})
+
+
+const rzrp = new Razorpay(options);
+
+preim.addEventListener('click',async (e) => {
+    e.preventDefault();
+    await paymentId() ;
+    rzrp.open();
+})
+
+// show expence code -----> ------> -----> 
 
 async function addExpence(event){
     event.preventDefault();
@@ -82,7 +142,9 @@ async function showExpence(userData){
     expns.appendChild(div);
 }
 
+
 window.addEventListener('DOMContentLoaded',async () => {
+    check();
     try{
         const response = await axios.get(`http://localhost:4000/findUser/${userID}`);
         console.log(response.data.data);
